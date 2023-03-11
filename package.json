@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "lint": "tsc"
+    "lint": "tsc",
+    "release": "npm run lint && npm run build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.4",
