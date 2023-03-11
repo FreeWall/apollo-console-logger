@@ -78,12 +78,12 @@ function logRequest(
     undefined,
     {
       query: print(operationAst),
-      ...(Object.keys(operation.variables).length
-        ? { variables: operation.variables }
-        : null),
-      ...(Object.keys(operation.getContext().headers).length
-        ? { headers: operation.getContext().headers }
-        : null),
+      ...(isEmpty(operation.variables)
+        ? null
+        : { variables: operation.variables }),
+      ...(isEmpty(operation.getContext().headers)
+        ? null
+        : { headers: operation.getContext().headers }),
     },
   );
 }
@@ -117,4 +117,16 @@ function logResponse(
     'background: #e4e4e4; padding: 2px 4px; border-radius: 3px; font-size: 11px;',
     results,
   );
+}
+
+function isEmpty(value: unknown) {
+  if (!value) {
+    return true;
+  }
+
+  if (typeof value === 'object') {
+    return !Object.keys(value).length;
+  }
+
+  return true;
 }
