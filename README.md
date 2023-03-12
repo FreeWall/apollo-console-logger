@@ -25,3 +25,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 ```
+
+## Sample output
+
+![image](/docs/sample-output.png)
