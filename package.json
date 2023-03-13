@@ -1,6 +1,6 @@
 {
   "name": "@freewall/apollo-console-logger",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "author": "Michal Vaněk",
   "private": false,
