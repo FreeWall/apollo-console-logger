@@ -1,6 +1,9 @@
 # Apollo Console Logger
 
-[![npm version](https://badge.fury.io/js/@freewall%2Fapollo-console-logger.svg)](https://badge.fury.io/js/@freewall%2Fapollo-console-logger)
+[![npm version](https://img.shields.io/npm/v/@freewall/apollo-console-logger?color=blue)](https://www.npmjs.com/@freewall/apollo-console-logger)
+[![publish status](https://img.shields.io/github/actions/workflow/status/FreeWall/apollo-console-logger/publish.yml)](https://github.com/FreeWall/apollo-console-logger/releases/latest)
+
+A console logger link for Apollo Client. Logs request and response of queries and mutations to console.
 
 ## Installation
 
