@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
-    "release": "npm run lint && npm run build"
+    "clean": "rimraf src docs .github",
+    "release": "npm run lint && npm run build && npm run clean"
   },
   "dependencies": {
     "@apollo/client": "^3.7.4",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "prettier": "2.7.1",
+    "rimraf": "^4.4.0",
     "tsup": "^6.6.3",
     "tsx": "^3.12.3",
     "typescript": "^4.9.3"
