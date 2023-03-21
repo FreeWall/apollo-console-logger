@@ -1,6 +1,6 @@
 {
   "name": "@freewall/apollo-console-logger",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "license": "MIT",
   "author": "Michal Vaněk",
   "private": false,
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc",
-    "clean": "rimraf src docs .github",
+    "clean": "rimraf src docs .github .editorconfig .prettierrc .gitignore tsconfig.json",
     "release": "npm run lint && npm run build && npm run clean"
   },
   "dependencies": {

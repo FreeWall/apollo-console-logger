@@ -25,10 +25,29 @@ const link = ApolloLink.from([
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  // ...
+});
+```
+
+### Options
+
+```js
+// default values:
+new ConsoleLoggerLink({
+  colors: {
+    query: {
+      request: '#E17E00',
+      response: '#A65D00',
+    },
+    mutation: {
+      request: '#E10098',
+      response: '#A5006F',
+    },
+  },
+  timings: true,
 });
 ```
 
 ## Sample output
 
-![image](/docs/sample-output.png)
+![image](/docs/sample-log-output.png)
