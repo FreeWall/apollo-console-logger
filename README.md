@@ -44,7 +44,9 @@ new ConsoleLoggerLink({
       response: '#A5006F',
     },
   },
-  timings: true,
+  multiline: false,
+  responseSize: true,
+  responseTime: true,
 });
 ```
 

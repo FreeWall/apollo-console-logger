@@ -12,7 +12,7 @@ import {
 } from 'graphql';
 import { print } from 'graphql/language/printer';
 
-const defaultOptions: ConsoleLoggerLinkOptions = {
+const defaultOptions: Required<ConsoleLoggerLinkOptions> = {
   colors: {
     [OperationTypeNode.QUERY]: {
       request: '#E17E00',
@@ -27,7 +27,9 @@ const defaultOptions: ConsoleLoggerLinkOptions = {
       response: '#A68600',
     },*/
   },
-  timings: true,
+  multiline: false,
+  responseSize: true,
+  responseTime: true,
 };
 
 interface ConsoleLoggerLinkOptions {
@@ -41,12 +43,14 @@ interface ConsoleLoggerLinkOptions {
       response: string;
     };
   };
-  timings?: boolean;
+  multiline?: boolean;
+  responseSize?: boolean;
+  responseTime?: boolean;
 }
 
 export class ConsoleLoggerLink extends ApolloLink {
   private logId = 0;
-  private options: ConsoleLoggerLinkOptions;
+  private options: Required<ConsoleLoggerLinkOptions>;
 
   constructor(options?: ConsoleLoggerLinkOptions) {
     super();
@@ -60,7 +64,9 @@ export class ConsoleLoggerLink extends ApolloLink {
           options?.colors?.[OperationTypeNode.MUTATION] ??
           defaultOptions?.colors?.[OperationTypeNode.MUTATION],
       },
-      timings: options?.timings ?? true,
+      multiline: options?.multiline ?? defaultOptions.multiline,
+      responseSize: options?.responseSize ?? defaultOptions.responseSize,
+      responseTime: options?.responseTime ?? defaultOptions.responseTime,
     };
   }
 
@@ -84,7 +90,7 @@ export class ConsoleLoggerLink extends ApolloLink {
       this._logRequest(operation, operationAst, operationId);
     }
 
-    const startTime = this.options.timings ? Date.now() : 0;
+    const startTime = this.options.responseTime ? Date.now() : 0;
 
     return forward(operation).map((result) => {
       if (
@@ -115,7 +121,8 @@ export class ConsoleLoggerLink extends ApolloLink {
         operationId +
         ' %c %c' +
         operation.operationName +
-        '%c',
+        '%c' +
+        (this.options.multiline ? '\n' : ''),
       'background: ' +
         this.options.colors?.[
           operationAst.operation as
@@ -155,7 +162,15 @@ export class ConsoleLoggerLink extends ApolloLink {
         ' %c ' +
         (!success ? '⚠️ ' : '') +
         `%c${operation.operationName}%c` +
-        (this.options.timings ? ` %c${Date.now() - startTime} ms` : '%c'),
+        (this.options.responseSize
+          ? ` %c${
+              Math.round((JSON.stringify(results)?.length / 1024) * 10) / 10
+            } kB`
+          : '%c') +
+        '%c' +
+        (this.options.responseTime ? ` %c${Date.now() - startTime} ms` : '%c') +
+        '%c' +
+        (this.options.multiline ? '\n' : ''),
       'background: ' +
         this.options.colors?.[
           operationAst.operation as
@@ -169,9 +184,14 @@ export class ConsoleLoggerLink extends ApolloLink {
           ? 'color: #008000;'
           : 'color: #CC0000; text-decoration: underline; text-decoration-style: dotted'),
       undefined,
-      this.options.timings
+      this.options.responseSize
         ? 'background: #e4e4e4; padding: 2px 4px; border-radius: 3px; font-size: 11px;'
         : undefined,
+      undefined,
+      this.options.responseTime
+        ? 'background: #e4e4e4; padding: 2px 4px; border-radius: 3px; font-size: 11px;'
+        : undefined,
+      undefined,
       results,
     );
   }
@@ -186,5 +206,5 @@ function isEmpty(value: unknown) {
     return !Object.keys(value).length;
   }
 
-  return true;
+  return false;
 }
